@@ -1,7 +1,27 @@
-This Repository was created for my 1st semester undergraduate Partial Differential Equations class at Cal Poly Pomona in Spring 2025.
-We were assigned to select a final project where we would create and present information on a something of interest related to PDEs.
-Our region had recently experienced the tragedy of 2 large wildfires which had so adversely affected many families.  I decided to explore 
-the use of PDEs in the modeling of wildfire behavior.
-What follows is the Overleaf based Latex including several images which were generated using MATLAB.
-The Overleaf project is all uploaded.
-Overtime I will be adding MATLAB code that generated that visuals.
+# Exploring Fire Modeling – PDE Final Project
+
+This repository contains a 1D traveling wave model of fire propagation, developed for a course in Partial Differential Equations.
+
+## 🔥 Project Overview
+
+The model simulates heat and flame spread using reaction-advection-diffusion principles. It incorporates analytical and numerical techniques, including finite difference methods and wavefront tracking.
+
+## 🧪 Tools Used
+
+- MATLAB (for code-based simulation)
+- Overleaf/LaTeX (for report and figures)
+- JPG images (for visual reference and model validation)
+
+## 📁 Repository Contents
+
+- `matlab-code/`: Source code for simulation and figure generation
+- `.jpg` files: Visual reference material for fire dynamics
+- `report/`: Final paper summarizing methods, results, and analysis *(upload PDF here)*
+
+## 📌 Citation
+
+If using this model or figures, please credit the author and course.
+
+---
+
+Let me know if you'd like to see the paper or simulation outputs.
