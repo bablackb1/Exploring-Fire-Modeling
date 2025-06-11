@@ -4,24 +4,26 @@ This repository contains a 1D traveling wave model of fire propagation, develope
 
 ## 🔥 Project Overview
 
-The model simulates heat and flame spread using reaction-advection-diffusion principles. It incorporates analytical and numerical techniques, including finite difference methods and wavefront tracking.
+We simulate the spread of a traveling wave (fire front) using numerical methods. The model incorporates heat diffusion, a reaction term for combustion, and optionally advection to simulate wind-driven behavior.
 
-## 🧪 Tools Used
+## 📁 Repository Structure
 
-- MATLAB (A sampling of the code-based simulation I wrote)
-- Overleaf/LaTeX (for report and figures)
-- JPG images (for visual reference and model validation)
+- `/paper/` — LaTeX source, compiled PDF, and all figures used in the report
+- `/matlab-code/` — Sampling of some of the MATLAB scripts used to simulate and visualize the fire model
 
-## 📁 Repository Contents
+## 🛠 Tools & Methods
 
-- `matlab-code/`: Source code for simulation and figure generation
-- `.jpg` files: Visual reference material for fire dynamics
-- `report/`: Final paper summarizing methods, results, and analysis *(upload PDF here)*
+- MATLAB (numerical simulation, plotting)
+- Finite difference methods (explicit and semi-implicit schemes)
+- Traveling wave analysis
+- Overleaf (for report preparation)
 
-## 📌 Citation
+## 📜 Citation
 
-If using this model or figures, please credit the author and course.
+If this work is useful for your own studies, please cite or reference appropriately.
 
 ---
 
-Let me know if you'd like to see the paper or simulation outputs.
+**Author:** Brookes Heil Blackburn 
+**Course:** Partial Differential Equations  
+**Semester:** MATH 4320 Spring 2025 Cal Poly Pomona
