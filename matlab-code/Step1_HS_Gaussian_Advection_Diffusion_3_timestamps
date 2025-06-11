@@ -1,0 +1,68 @@
+% Brookes Heil Blackburn
+% MAT 4320 - FDM Adapted Epidmenic model for Burning
+clear; clc; clf; close all;
+% Variables
+D = .5; % Thermal Conductivity/Diffusion coefficient
+b = 1.5; % infection rate of those exposed
+r = .2; % Fatality Rate
+
+% Total Spatial length ; Number spatial steps ; h
+L = 1000; J = 5000; h = L/J;
+
+% Total Time ; Number time steps ; k
+TT = 100; N = 2000; k = (h^2)/(D*2);
+
+% Set up x, t and mesh grid
+x = linspace(0, L, J+1);
+t = linspace(0, TT, N+1);
+[T,X] = meshgrid(t,x);
+
+% Recivered matrix initialized
+R = zeros(J+1,N+1);
+% Susceptibles matrix initialized
+S = zeros(J+1,N+1);
+% Infected matrix initialized
+I = zeros(J+1,N+1);
+
+% Initial Condition Function
+f = @(x) heaviside(x);
+
+for j=1:J+1
+    S(j,1)=f((X(j,1))); 
+end 
+% Initial Conditions - NEED HELP???
+% S(:,1) = 0.3 + 0.6 * (1 + tanh( (x - 0.3)/0.1 )) / 2;
+ 
+I(:,1) = 0.1 * exp( -((x - 0.7)/0.1).^2 );
+
+% Partial Difference Equation (Numerical Scheme)
+for n=1:N
+    for j=2:J
+        I_xx = ( I((j+1),n) - 2*(I(j,n)) + I((j-1),n) ) / ( h^2 );
+        I(j,n+1) = I(j,n) + k * ( ( b*S(j,n)*I(j,n) ) - (r*I(j,n)) + (D * I_xx) );
+        S(j,n+1) = S(j,n) - k * ( b*S(j,n)*I(j,n) );
+    end
+end
+% Fill in the 0's at the boundaries for graphing
+for n=1:N
+    S(1,n) = S(2,n);
+    S(j+1, n) = S(j, n);
+    I(1,n) = I(2,n);
+    I(j+1, n) = I(j,n);
+end
+%% PLOT
+figure(3)
+plot(X(1:J-1,1), S(1:J-1,1), 'k-', 'LineWidth', 2); 
+plot(X(1:J-1,1), I(1:J-1,1), 'm--', 'LineWidth', 2); 
+axis([0 200 0 1]);
+xlabel('x')
+ylabel('u')
+hold on;
+plot(X(1:J-1,300), S(1:J-1,300), 'r-', 'LineWidth', 2);     
+plot(X(1:J-1,800), S(1:J-1,800), 'g-', 'LineWidth', 2);    
+plot(X(1:J-1,1500), S(1:J-1,1500), 'b-', 'LineWidth', 2); 
+plot(X(1:J-1,300), I(1:J-1,300), 'r--', 'LineWidth', 2);     
+plot(X(1:J-1,800), I(1:J-1,800), 'g--', 'LineWidth', 2);    
+plot(X(1:J-1,1500), I(1:J-1,1500), 'b--', 'LineWidth', 2); 
+legend('t1=1','t2=300','t3=800','t4=1500','Location','southeast')
+title('Fire Diffusion at 3 Time Steps')
