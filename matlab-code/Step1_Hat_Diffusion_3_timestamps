@@ -1,0 +1,58 @@
+% Brookes Heil Blackburn
+% MAT 4320 - Basic Diffusion Hat Subsection 2.3
+clear; clc; clf; close all;
+% Variables
+
+D = .2;       % Thermal Conductivity/Diffusion coefficient
+
+% Total Spatial length ; Number spatial steps ; h
+L = 10;   J = 500;    h = L/J;       
+% Total Time ; Number time steps ; k
+TT = 2;   k = (h^2) / (D*2); N = TT/k;  
+
+
+% Set up x, t and mesh grid
+x = linspace(-L/2, L/2, J+1);
+t = linspace(-TT/2, TT/2, N+1);
+[T,X] = meshgrid(t,x);
+
+% U matrix initialized
+U = zeros(J+1,N+1);
+
+% Initial Condition Function
+f = @(x) heaviside(x)-heaviside(x-2);
+
+% Initial Position at time = 0 
+for j=1:J+1
+    U(j,1)=f((X(j,1))); 
+end 
+
+for n=1:N 
+    for j=2:J
+        U(j,n+1) = U(j,n) + ( (D*k) / (h^2) ) * (U(j-1,n) - 2*U(j,n) + U(j+1,n));
+    end 
+end 
+
+%%
+
+% Plot solution on a mesh...not much changes over time
+hold off;
+figure(1)
+mesh(X,T,U)
+xlabel('x')
+ylabel('t')
+title('Hat Function Initial Condition')
+
+
+time_indices = int16(1:200:N+1);
+
+
+figure(3)
+plot(X(1:J-1,1), U(1:J-1,1), 'k-', 'LineWidth', 2); 
+xlabel('x')
+ylabel('u')
+hold on; 
+plot(X(1:J-1,400), U(1:J-1,400), 'b--', 'LineWidth', 2);    
+plot(X(1:J-1,1500), U(1:J-1,1500), 'Color',[1 0.5 0], 'LineStyle','--','LineWidth', 2);    
+legend('t1=1','t2=400,','t3=1500','Location','southeast')
+title('Diffusion at 3 Time Steps')
