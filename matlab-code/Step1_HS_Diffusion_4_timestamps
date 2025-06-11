@@ -1,0 +1,105 @@
+% Brookes Heil Blackburn Justin Raimundo
+% MAT 4320 - Advection Diffusion Final Projects Subsection 2.5
+clear; clc; clf; close all;
+% Variables
+
+D = .09;        % Thermal Conductivity/Diffusion coefficient
+c = .3;         % Propogation Speed
+
+% Total Spatial length ; Number spatial steps ; h
+L = 5;   J = 100;    h = L/J;       
+% Total Time ; Number time steps ; k
+TT = 5;   
+k_a = h/c;            % Logan advection 
+k_d = h^2 / (2*D);    % Brian Bradie Page 820
+k = .9*min(k_a, k_d); % More Restrictive k
+N = round(TT/k);      % 
+k = TT/N;             % Get k into nice format
+theta = .5;           %Crank Nicolson scheme
+r = (k*D)/(h^2);      %Logan page 274 implicit
+F = zeros(J-1, 1);
+
+% -------LINEAR SYSTEM TO SOLVE FOR U(j+1) ---------------------
+%% Logan CH6 - creating simple stable implicit system
+    tm(1, 1) = 1+ (2*r*theta);
+    tm(1, 2) = -r * theta;
+    for j=2:J-2
+        tm(j, j-1) = -r * theta;
+        tm(j, j) = 1+ (2*r*theta);
+        tm(j, j+1) = -r * theta;
+    end
+    tm(J-1,J-2) = -r * theta;
+    tm(J-1,J-1) = 1+ (2*r*theta);
+    
+    x = linspace(0, L, J+1);
+    t = linspace(0, TT, N+1);
+    [T,X] = meshgrid(t,x);
+
+% U matrix initialized
+U = zeros(J+1,N+1);
+U_temp = zeros(J-1,J-1);
+
+% Initial Condition Function
+f = @(x) heaviside(x)-heaviside(x-1);
+
+% Initial Position at time = 0 
+for j=1:J+1
+    U(j,1)=f((X(j,1))); 
+end 
+
+% % Boundaries for all time
+for n=1:N+1 
+    U(1,n)=0;
+    U(J+1,n)=0; 
+end 
+
+% Partial Difference Equation (Numerical Scheme) 
+% Explicit Advection w/ implicit diffusion
+
+for n=1:N 
+    u_adv = U(:, n);
+    for j=2:J-1
+        u_adv(j) = U(j,n)...
+        - ( ((c*k) / (h))  * ( U(j,n)-U(j-1,n) ));
+    end
+    u_adv(1)   = 0;   % left boundary
+    u_adv(J+1) = 0;   % right boundary
+    for j=2:J
+        F(j-1) = (1 - theta)*r * u_adv(j-1) + ...
+            (1 - ( 2*(1-theta)*r ) ) * u_adv(j) + ...
+            (1-theta) * r * u_adv(j+1);
+    end 
+    U_temp = tm \ F;
+    U(2:J,n+1) = U_temp;
+    U(1,n+1)=0;
+    U(J+1,n+1)=0;
+end 
+
+%%
+
+% 
+% Animation code if you want to uncomment
+% figure(4);
+% for n = 1:20:N
+%     plot(x, U(:,n), 'b', 'LineWidth', 2);
+%     axis([0 L 0 1.5]);
+%     xlabel('x'); ylabel('U(x,t)');
+%     title(sprintf('t = %.2f', t(n)));
+%     grid on;
+%     pause(.5)
+%     drawnow;
+% end
+
+figure(3)
+plot(X(1:J-1,1), U(1:J-1,1),'LineWidth', 2); 
+hold on;
+for n = 100:100:N
+    plot(X(1:J-1,n), U(1:J-1,n), 'LineStyle','--','LineWidth', 2); 
+    xlabel('x')
+    ylabel('u')
+    hold on;
+    legend('t1=1','t2=100','t3=200','t4=300','t5=400','Location','northeast')
+    title('Advection & Diffusion at 4 Time Steps')
+end
+line_color = ["k","r","g","b","c"];
+colororder(line_color);
