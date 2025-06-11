@@ -8,7 +8,7 @@ The model simulates heat and flame spread using reaction-advection-diffusion pri
 
 ## 🧪 Tools Used
 
-- MATLAB (for code-based simulation)
+- MATLAB (A sample of code-based simulation)
 - Overleaf/LaTeX (for report and figures)
 - JPG images (for visual reference and model validation)
 
